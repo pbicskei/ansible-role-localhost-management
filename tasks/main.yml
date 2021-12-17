@@ -37,7 +37,7 @@
   - debug:
       msg: "{{ hostgroups }}"    
 
-    - name: Generate classified-iventory
+  - name: Generate evil-inventory
     ansible.builtin.template:
       src: "../templates/evil-inventory.j2"
       dest: "evil-inventory"
