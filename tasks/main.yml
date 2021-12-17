@@ -37,11 +37,6 @@
     delegate_to: 127.0.0.1 
     run_once: yes
 
-  - name: Create unique group list
-    vars:
-      hostgroups: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | replace('.','_') | list | unique }}"
-    run_once: yes
-
   - name: "## `evil-block` start"
     lineinfile:
       dest: "{{ playbook_dir }}/evil-inventory"
