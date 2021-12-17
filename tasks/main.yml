@@ -25,21 +25,6 @@
           User {{ ansible_ssh_user }}
           Hostname {{ ansible_default_ipv4.address }}
       state: present
-    when: '"pve" not in ansible_kernel'
-    delegate_to: 127.0.0.1 
-    run_once: yes
-
-  - name: "{{ lookup('env', 'HOME') }}/.ssh/config"
-    blockinfile:
-      dest: "{{ lookup('env', 'HOME') }}/.ssh/config"
-      content: |
-        Host {{ ansible_fqdn }}
-          StrictHostKeyChecking yes
-          port 22
-          User {{ ansible_ssh_user }}
-          Hostname {{ ansible_default_ipv4.address }}
-      state: present
-    when: '"pve" in ansible_kernel'
     delegate_to: 127.0.0.1 
     run_once: yes
 
@@ -47,6 +32,11 @@
   - name: Create list with unique classifications to form automatic groups
     ansible.builtin.shell: "echo {{ classify_facts.classification | replace('.','_') }}"
     register: echo
+
+  - name: Create evil-inventory file
+    file:
+      state: touch
+      path: ../evil-inventory
 
   - name: "## `evil-block` start"
     lineinfile:
