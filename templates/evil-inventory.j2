@@ -3,13 +3,7 @@ loop:
 {% for item in hostgroups %}
 
 [{{ item }}]
-{% for host in ansible_play_batch %}
-
-{% if hostvars[host]['classify_facts']['classification'] == {{ item }} %}
 {{ hostvars[host]['ansible_facts']['classify_fqdn'] }}
-{% endif %}
-
-{% endfor %}
 [{{ item }}:vars]
 
 {% endfor %}
