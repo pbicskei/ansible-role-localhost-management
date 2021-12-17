@@ -7,7 +7,7 @@ loop:
 {% if hostvars[hosts]['ansible_facts']['classify_facts']['classification'] == item -%}
 hostvars[hosts]['ansible_facts']['classify_fqdn']
 {-% endif %}
-{% endfor%}
+{% endfor %}
 [{{ item }}:vars]
 
 {% endfor %}
