@@ -26,19 +26,20 @@
           Hostname {{ ansible_default_ipv4.address }}
       state: present
     delegate_to: 127.0.0.1 
-    run_once: yes
 
   ### Ansible inventory
-  - name: Create list with unique classifications to form automatic groups
-    ansible.builtin.shell: "echo {{ classify_facts.classification | replace('.','_') }}"
-    register: echo
-
   - name: Create evil-inventory file
     file:
       state: touch
-      path: "{{ playbook_dir }}/evil-inventory"
+      path: "{{ playbook_dir }}../evil-inventory"
       mode: 0755
       owner: "{{ lookup('env', 'USER')}}"
+    delegate_to: 127.0.0.1 
+    run_once: yes
+
+  - name: Create list with unique classifications to form automatic groups
+    ansible.builtin.shell: "echo {{ classify_facts.classification | replace('.','_') }}"
+    register: echo
 
   - name: "## `evil-block` start"
     lineinfile:
