@@ -44,7 +44,7 @@
 
   - name: debug
     debug:
-      msg: "{{ echo.stdout }}"
+      msg: "{{ echo.stdout | to_list }}"
 
   # - name: "## `evil-block` start"
   #   lineinfile:
