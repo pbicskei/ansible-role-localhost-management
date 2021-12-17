@@ -1,0 +1,15 @@
+galaxy_info:
+  role_name: manage_localhost
+  author: Peter Bicskei
+  description: Role to manage some files and settings on your localhost.
+  company: no company (optional)
+
+  license: license (GPL-2.0-or-later, MIT, etc)
+
+  min_ansible_version: 2.1
+
+  galaxy_tags:
+    - localhost
+
+dependencies: 
+   - pbicskei.classify

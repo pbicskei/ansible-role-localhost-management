@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  pre_tasks:
+    - name: Set fact dummy value for test
+      set_fact:
+        type: g
+  roles:
+    - ansible-role-localhost-management
