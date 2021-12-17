@@ -40,7 +40,7 @@
 
   - name: "## `evil-block` start"
     lineinfile:
-      dest: "evil-inventory"
+      dest: "{{ playbook_dir }}/evil-inventory"
       line: "## `evil-block` start"
       state: present
     delegate_to: 127.0.0.1 
@@ -48,7 +48,7 @@
 
   - name: "Build `evil-inventory` group:vars block"
     lineinfile:
-      dest: "evil-inventory"
+      dest: "{{ playbook_dir }}/evil-inventory"
       line: "[{{ item }}:vars]"
       state: present
     delegate_to: 127.0.0.1 
@@ -57,7 +57,7 @@
 
   - name: "Build `evil-inventory` group block"
     lineinfile:
-      dest: "evil-inventory"
+      dest: "{{ playbook_dir }}/evil-inventory"
       line: "[{{ item }}]"
       insertbefore: "[{{ item }}:vars]"
       state: present
@@ -67,7 +67,7 @@
 
   - name: "## `evil-block` end"
     lineinfile:
-      dest: "evil-inventory"
+      dest: "{{ playbook_dir }}/evil-inventory"
       line: "## `evil-block` end"
       insertbefore: "[{{ item }}:vars]"
       state: present
