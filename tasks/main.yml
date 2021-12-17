@@ -36,7 +36,9 @@
   - name: Create evil-inventory file
     file:
       state: touch
-      path: evil-inventory
+      path: "{{ playbook_dir }}/evil-inventory"
+      mode: 0755
+      owner: "{{ lookup('env', 'USER')}}"
 
   - name: "## `evil-block` start"
     lineinfile:
