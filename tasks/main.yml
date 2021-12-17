@@ -28,31 +28,38 @@
     delegate_to: 127.0.0.1 
 
   ### Ansible inventory
-  - name: Create evil-inventory file
-    ansible.builtin.file:
-      state: touch
-      path: "{{ playbook_dir }}/../eviltory"
-      mode: 0755
-      owner: "{{ lookup('env', 'USER')}}"
-    delegate_to: 127.0.0.1 
-    run_once: yes
+  - name: Unique groups
+    set_fact:
+      hostgroups: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | list | unique | replace('.','_')  }}"
 
-  - name: "## `evil-block` start"
-    lineinfile:
-      dest: "{{ playbook_dir }}/evil-inventory"
-      line: "## `evil-block` start"
-      state: present
-    delegate_to: 127.0.0.1 
-    run_once: yes
+  - debug:
+      msg: "{{ hostgroups }}"    
 
-  - name: "Build `evil-inventory` group:vars block"
-    lineinfile:
-      dest: "{{ playbook_dir }}/evil-inventory"
-      line: "[{{ item }}]\n[{{ item }}:vars]"
-      state: present
-    delegate_to: 127.0.0.1 
-    run_once: yes
-    loop: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | list | unique | replace('.','_')  }}"
+  # - name: Create evil-inventory file
+  #   ansible.builtin.file:
+  #     state: touch
+  #     path: "{{ playbook_dir }}/../evil-inventory"
+  #     mode: 0755
+  #     owner: "{{ lookup('env', 'USER')}}"
+  #   delegate_to: 127.0.0.1 
+  #   run_once: yes
+
+  # - name: "## `evil-block` start"
+  #   lineinfile:
+  #     dest: "{{ playbook_dir }}/evil-inventory"
+  #     line: "## `evil-block` start"
+  #     state: present
+  #   delegate_to: 127.0.0.1 
+  #   run_once: yes
+
+  # - name: "Build `evil-inventory` group:vars block"
+  #   lineinfile:
+  #     dest: "{{ playbook_dir }}/evil-inventory"
+  #     line: "[{{ item }}]\n[{{ item }}:vars]"
+  #     state: present
+  #   delegate_to: 127.0.0.1 
+  #   run_once: yes
+  #   loop: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | list | unique | replace('.','_')  }}"
 
   # - name: "Build `evil-inventory` group block"
   #   lineinfile:
