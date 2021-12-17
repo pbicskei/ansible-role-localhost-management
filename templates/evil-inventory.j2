@@ -4,9 +4,11 @@ loop:
 
 [{{ item }}]
 {% for host in ansible_play_batch %}
-{% if hostvars[hosts]['ansible_facts']['classify_facts']['classification'] == item -%}
-hostvars[hosts]['ansible_facts']['classify_fqdn']
-{-% endif %}
+
+{% if hostvars[hosts]['classify_facts']['classification'] == {{ item }} %}
+{{ hostvars[hosts]['ansible_facts']['classify_fqdn'] }}
+{% endif %}
+
 {% endfor %}
 [{{ item }}:vars]
 
