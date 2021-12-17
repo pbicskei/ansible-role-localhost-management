@@ -22,7 +22,7 @@
         Host {{ ansible_fqdn }}
           StrictHostKeyChecking yes
           port {{ ansible_ssh_port }}
-          User {{ current_user }}
+          User {{ ansible_ssh_user }}
           Hostname {{ ansible_default_ipv4.address }}
       state: present
     when: '"pve" not in ansible_kernel'
@@ -36,7 +36,7 @@
         Host {{ ansible_fqdn }}
           StrictHostKeyChecking yes
           port 22
-          User {{ current_user }}
+          User {{ ansible_ssh_user }}
           Hostname {{ ansible_default_ipv4.address }}
       state: present
     when: '"pve" in ansible_kernel'
