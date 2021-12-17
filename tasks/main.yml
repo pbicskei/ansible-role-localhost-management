@@ -38,8 +38,9 @@
     run_once: yes
 
   - name: Create list with unique classifications to form automatic groups
-    ansible.builtin.shell: "echo {{ classify_facts.classification | replace('.','_') }}"
+    ansible.builtin.shell: "echo {{ item }}"
     register: echo
+    loop: "{{ classify_facts.classification | replace('.','_') }}"
 
   - name: debug
     debug:
