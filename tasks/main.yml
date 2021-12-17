@@ -29,9 +29,9 @@
 
   ### Ansible inventory
   - name: Create evil-inventory file
-    file:
+    ansible.builtin.file:
       state: touch
-      path: "{{ playbook_dir }}../evil-inventory"
+      path: "{{ playbook_dir }}/../eviltory"
       mode: 0755
       owner: "{{ lookup('env', 'USER')}}"
     delegate_to: 127.0.0.1 
@@ -44,7 +44,7 @@
   - name: debug
     debug:
       msg: "{{ echo }}"
-      
+
   # - name: "## `evil-block` start"
   #   lineinfile:
   #     dest: "{{ playbook_dir }}/evil-inventory"
