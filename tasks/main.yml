@@ -31,7 +31,8 @@
   - name: Unique groups
     set_fact:
       hostgroups: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | list | unique | replace('.','_')  }}"
-
+    run_once: yes
+    delegate_to: 127.0.0.1
   - debug:
       msg: "{{ hostgroups }}"    
 
