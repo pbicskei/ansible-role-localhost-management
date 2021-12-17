@@ -48,7 +48,7 @@
   - name: "Build `evil-inventory` group:vars block"
     lineinfile:
       dest: "{{ playbook_dir }}/evil-inventory"
-      line: "[{{ item }}:vars]\n[{{ item }}:vars]"
+      line: "[{{ item }}]\n[{{ item }}:vars]"
       state: present
     delegate_to: 127.0.0.1 
     run_once: yes
