@@ -3,7 +3,7 @@ loop:
 {% for item in hostgroups %}
 
 [{{ item }}]
-{{ hostvars[host]['ansible_facts']['classify_fqdn'] }}
+{{ hostvars[item]['ansible_facts']['classify_fqdn'] }}
 [{{ item }}:vars]
 
 {% endfor %}
