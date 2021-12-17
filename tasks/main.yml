@@ -37,50 +37,46 @@
     delegate_to: 127.0.0.1 
     run_once: yes
 
-  - name: Create list with unique classifications to form automatic groups
-    ansible.builtin.shell: "echo {{ classify_facts.classification | replace('.','_') }}"
-    register: echo
-    # loop: "{{ classify_facts.classification | replace('.','_') }}"
+  - name: Create unique group list
+    set_fact:
+      hostgroups: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | replace('.','_') | list | unique }}"
+    run_once: yes 
 
-  - name: debug
-    debug:
-      msg: "{{ echo.stdout }}"
+  - name: "## `evil-block` start"
+    lineinfile:
+      dest: "{{ playbook_dir }}/evil-inventory"
+      line: "## `evil-block` start"
+      state: present
+    delegate_to: 127.0.0.1 
+    run_once: yes
 
-  # - name: "## `evil-block` start"
-  #   lineinfile:
-  #     dest: "{{ playbook_dir }}/evil-inventory"
-  #     line: "## `evil-block` start"
-  #     state: present
-  #   delegate_to: 127.0.0.1 
-  #   run_once: yes
+  - name: "Build `evil-inventory` group:vars block"
+    lineinfile:
+      dest: "{{ playbook_dir }}/evil-inventory"
+      line: "[{{ item }}:vars]"
+      state: present
+    delegate_to: 127.0.0.1 
+    run_once: yes
+    loop: "{{ hostgroups }}"
 
-  # - name: "Build `evil-inventory` group:vars block"
-  #   lineinfile:
-  #     dest: "{{ playbook_dir }}/evil-inventory"
-  #     line: "[{{ item }}:vars]"
-  #     state: present
-  #   delegate_to: 127.0.0.1 
-  #   run_once: yes
-  #   loop: "{{ echo | unique }}"
+  - name: "Build `evil-inventory` group block"
+    lineinfile:
+      dest: "{{ playbook_dir }}/evil-inventory"
+      line: "[{{ item }}]"
+      insertbefore: "[{{ item }}:vars]"
+      state: present
+    delegate_to: 127.0.0.1 
+    run_once: yes
+    loop: "{{ hostgroups }}"
 
-  # - name: "Build `evil-inventory` group block"
-  #   lineinfile:
-  #     dest: "{{ playbook_dir }}/evil-inventory"
-  #     line: "[{{ item }}]"
-  #     insertbefore: "[{{ item }}:vars]"
-  #     state: present
-  #   delegate_to: 127.0.0.1 
-  #   run_once: yes
-  #   loop: "{{ echo | unique }}"
-
-  # - name: "## `evil-block` end"
-  #   lineinfile:
-  #     dest: "{{ playbook_dir }}/evil-inventory"
-  #     line: "## `evil-block` end"
-  #     insertbefore: "[{{ item }}:vars]"
-  #     state: present
-  #   delegate_to: 127.0.0.1 
-  #   run_once: yes
+  - name: "## `evil-block` end"
+    lineinfile:
+      dest: "{{ playbook_dir }}/evil-inventory"
+      line: "## `evil-block` end"
+      insertbefore: "[{{ item }}:vars]"
+      state: present
+    delegate_to: 127.0.0.1 
+    run_once: yes
     
 
   # - name: "Enrich local inventory file"
