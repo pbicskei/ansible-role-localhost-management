@@ -1,0 +1,8 @@
+---
+loop:
+{% for item in hostgroups %}
+
+[{{ item }}]
+[{{ item }}:vars]
+
+{% endfor %}

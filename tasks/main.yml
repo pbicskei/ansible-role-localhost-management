@@ -33,8 +33,16 @@
       hostgroups: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | list | unique | replace('.','_')  }}"
     run_once: yes
     delegate_to: 127.0.0.1
+
   - debug:
       msg: "{{ hostgroups }}"    
+
+    - name: Generate classified-iventory
+    ansible.builtin.template:
+      src: "../templates/evil-inventory.j2"
+      dest: "evil-inventory"
+    delegate_to: 127.0.0.1
+    run_once: yes
 
   # - name: Create evil-inventory file
   #   ansible.builtin.file:
