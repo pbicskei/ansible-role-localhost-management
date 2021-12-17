@@ -40,7 +40,8 @@
   - name: Create unique group list
     set_fact:
       hostgroups: "{{ groups['invited'] | map('extract', hostvars, 'classify_facts') | map(attribute='classification') | replace('.','_') | list | unique }}"
-    run_once: yes 
+    run_once: yes
+    delegate_to: 127.0.0.1
 
   - name: "## `evil-block` start"
     lineinfile:
